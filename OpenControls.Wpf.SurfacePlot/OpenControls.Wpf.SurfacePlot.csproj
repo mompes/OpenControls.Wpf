@@ -58,6 +58,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorMap.cs" />
     <Compile Include="Exports.cs" />
     <Compile Include="Model\AxisLabels.cs" />
     <Compile Include="Model\Configuration.cs" />

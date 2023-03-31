@@ -215,12 +215,16 @@ namespace OpenControls.Wpf.SurfacePlot
                 redLevel = (short)MaxZValue;
                 blueLevel = (short)MinZValue;
             }
-
+            Int16 delta = (Int16)(zValue - blueLevel);
+            float fraction = (redLevel == blueLevel) ? 1.0f : ((float)delta) / (float)(redLevel - blueLevel);
+            return ColorMap.Parula(fraction);
+            /*
             Int16 delta = (Int16)(zValue - blueLevel);
             float fraction = (redLevel == blueLevel) ? 1.0f : ((float)delta) / (float)(redLevel - blueLevel);
             Color4 color1;
             Color4 color2;
-            if (fraction > 0.75f)
+            */
+            /*if (fraction > 0.75f)
             {
                 color1 = _orange;
                 color2 = _red;
@@ -242,11 +246,29 @@ namespace OpenControls.Wpf.SurfacePlot
             {
                 color1 = _blue;
                 color2 = _green;
+            }*/
+            /*
+            if (fraction > 0.66f)
+            {
+                color1 = _yellow;
+                color2 = _orange;
+                fraction -= 0.66f;
+            }
+            else if (fraction > 0.33f)
+            {
+                color1 = _green;
+                color2 = _yellow;
+                fraction -= 0.33f;
+            }
+            else
+            {
+                color1 = _blue;
+                color2 = _green;
             }
             fraction *= 4.0f;
             float oneMinusFraction = 1.0f - fraction;
             Color4 color = new Color4(color1.R * oneMinusFraction + color2.R * fraction, color1.G * oneMinusFraction + color2.G * fraction, color1.B * oneMinusFraction + color2.B * fraction, 0.0f);
-            return color;
+            return color;*/
         }
 
         private Color4 GetVertexColour(float zValue)
@@ -337,7 +359,14 @@ namespace OpenControls.Wpf.SurfacePlot
 
                     foreach (var vertex in _rawDataValues.Vertices)
                     {
-                        vertex.Colour = GetVertexColour(vertex.Z);
+                        if (vertex.Z < 0.0f)
+                        {
+                            vertex.Colour = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
+                        }
+                        else
+                        {
+                            vertex.Colour = GetVertexColour(vertex.Z);
+                        }
                     }
                 }
             }
@@ -385,7 +414,7 @@ namespace OpenControls.Wpf.SurfacePlot
                 }
                 else if (_iConfiguration.ViewProjection == ViewProjection.ThreeDimensional)
                 {
-                    _xRotationInDegrees -= (e.Y - _mouseY) / 2;
+                    //_xRotationInDegrees -= (e.Y - _mouseY) / 2;
                     _zRotationInDegrees += (e.X - _mouseX) / 2;
                 }
             }
